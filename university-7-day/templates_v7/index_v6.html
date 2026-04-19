@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>شارك حلمك ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#e91e8c;--teal:#00bcd4;--yellow:#ffd600;
+  --green:#4caf50;--orange:#ff5722;--purple:#ab47bc;
+  --bg:#2d2d2d;--font:'Cairo',sans-serif;
+}
+html,body{min-height:100vh;font-family:var(--font);background:var(--bg);overflow-x:hidden}
+.bg-dots{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bgd{position:absolute;border-radius:50%;opacity:.18;animation:bgF linear infinite}
+@keyframes bgF{0%{transform:translate(0,0)}50%{transform:translate(12px,-18px)}100%{transform:translate(0,0)}}
+.page{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px 16px 40px}
+.card{
+  background:#fff;
+  border-radius:50% 50% 48% 52% / 46% 46% 54% 54%;
+  width:min(420px,94vw);
+  padding:44px 36px 52px;
+  text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 10px rgba(255,255,255,.06);
+  animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.top-emoji-wrap{
+  width:62px;height:62px;border-radius:50%;
+  background:#f5f5f5;border:2.5px solid #ddd;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;margin:0 auto 10px;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.card-title{
+  font-size:1.65rem;font-weight:900;
+  background:linear-gradient(135deg,var(--pink),var(--teal),var(--yellow));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:3px;
+}
+.card-sub{font-size:.8rem;color:#777;margin-bottom:18px;font-weight:600}
+
+/* ── fields ── */
+.field{margin-bottom:11px;text-align:right}
+.field label{display:block;font-size:.77rem;font-weight:700;color:#555;margin-bottom:4px}
+.fw{position:relative}
+.fw input,.fw textarea{
+  width:100%;padding:9px 11px 9px 42px;
+  border:2px solid #e0e0e0;border-radius:10px;
+  font-family:var(--font);font-size:.88rem;color:#222;
+  background:#fafafa;outline:none;direction:rtl;resize:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.fw textarea{padding-bottom:22px}
+.fw input:focus,.fw textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(233,30,140,.13);background:#fff}
+.cc{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:.66rem;color:#bbb;pointer-events:none}
+.fw.ta .cc{top:auto;bottom:6px;transform:none}
+.cc.warn{color:#f44336;font-weight:700}
+.ferr{font-size:.7rem;color:#f44336;font-weight:700;margin-top:2px;display:none}
+
+/* ══════════════════════════════════════════
+   DREAM / HOROSCOPE TOGGLE SECTION
+══════════════════════════════════════════ */
+.dream-section{margin-bottom:11px;text-align:right}
+.dream-section > label{display:block;font-size:.77rem;font-weight:700;color:#555;margin-bottom:7px}
+
+/* toggle tabs */
+.dream-tabs{
+  display:flex;gap:6px;margin-bottom:10px;
+  background:#f3f4f6;border-radius:12px;padding:4px;
+}
+.dtab{
+  flex:1;padding:8px 6px;border:none;border-radius:9px;
+  font-family:var(--font);font-size:.78rem;font-weight:700;
+  cursor:pointer;transition:all .2s;color:#777;background:transparent;
+  line-height:1.3;
+}
+.dtab.active{
+  background:#fff;color:var(--pink);
+  box-shadow:0 2px 8px rgba(233,30,140,.15);
+}
+
+/* dream custom panel */
+#dreamPanel{display:block}
+.fw.ta .cc{top:auto;bottom:6px;transform:none}
+
+/* horoscope panel */
+#horoPanel{display:none}
+.horo-card{
+  background:linear-gradient(135deg,#fce4ec,#e3f2fd);
+  border:2px solid #f8bbd0;border-radius:12px;
+  padding:12px 14px;
+  min-height:52px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+}
+.horo-text{
+  font-size:.88rem;font-weight:700;color:#4a148c;
+  line-height:1.5;
+}
+.horo-hint{
+  font-size:.75rem;color:#9e9e9e;font-weight:600;
+  margin-top:4px;display:block;text-align:center;
+}
+.horo-loading{color:#bbb;font-size:.82rem;font-weight:600}
+
+/* ── emoji grid ── */
+.emo-label{font-size:.77rem;font-weight:700;color:#555;text-align:right;margin-bottom:5px}
+.emo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:12px}
+.eb{
+  background:#f3f4f6;border:2px solid transparent;border-radius:9px;
+  padding:6px 0;font-size:1.3rem;cursor:pointer;
+  transition:all .18s cubic-bezier(.34,1.56,.64,1);outline:none;line-height:1;
+}
+.eb:hover{transform:scale(1.14);background:#fce4ec;border-color:var(--pink)}
+.eb.sel{background:linear-gradient(135deg,#fce4ec,#e3f2fd);border-color:var(--pink);transform:scale(1.18);box-shadow:0 3px 10px rgba(233,30,140,.28)}
+.eerr{font-size:.7rem;color:#f44336;font-weight:700;margin-bottom:8px;display:none;text-align:right}
+
+/* submit */
+.sbtn{
+  width:100%;padding:13px;border:none;border-radius:999px;
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--teal));
+  color:#fff;font-family:var(--font);font-size:1.05rem;font-weight:800;
+  cursor:pointer;box-shadow:0 6px 20px rgba(233,30,140,.4);
+  transition:transform .15s,box-shadow .15s;
+}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(233,30,140,.5)}
+.sbtn:active{transform:translateY(0)}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:200;background:rgba(30,30,30,.94);
+    display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.ov.show{opacity:1;pointer-events:all}
+.ovc{background:#fff;border-radius:28px;padding:38px 26px;text-align:center;max-width:310px;width:90%;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+.ovi{font-size:3.2rem;display:block;margin-bottom:10px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ovt{font-size:1.2rem;font-weight:900;color:#1a1a2e;margin-bottom:6px}
+.ovm{font-size:.88rem;color:#6366f1;font-weight:700;margin-bottom:12px}
+.ovmot{background:linear-gradient(135deg,#fce4ec,#e8f5e9);border-radius:12px;padding:10px 14px;font-size:.85rem;font-weight:700;color:#333}
+.ty{position:fixed;inset:0;z-index:300;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .5s}
+.ty.show{opacity:1;pointer-events:all}
+.tyc{
+  width:195px;height:195px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--pink));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 14px 50px rgba(233,30,140,.4);
+  animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;text-align:center;padding:18px;
+}
+.tyi{font-size:2.5rem;margin-bottom:5px}
+.tyt{font-size:1.15rem;font-weight:900;color:#fff}
+.tys{font-size:.78rem;color:rgba(255,255,255,.85);margin-top:3px}
+.cfwrap{position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden}
+.cp{position:absolute;top:-20px;border-radius:3px;animation:cff linear forwards}
+@keyframes cff{to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="bg-dots" id="bgDots"></div>
+<div class="page">
+  <div class="card">
+    <div class="top-emoji-wrap" id="topEmoji">😊</div>
+    <h1 class="card-title">شارك حلمك</h1>
+    <p class="card-sub">اكتب حلمك وسيظهر على الشاشة الكبيرة 🌟</p>
+
+    <!-- Name -->
+    <div class="field">
+      <label>👤 الاسم</label>
+      <div class="fw">
+        <input id="fName" type="text" placeholder="اسمك..." maxlength="11" autocomplete="off"/>
+        <span class="cc" id="cName">0/11</span>
+      </div>
+      <div class="ferr" id="eName">هذا الحقل مطلوب</div>
+    </div>
+
+    <!-- ══ DREAM / HOROSCOPE SECTION ══ -->
+    <div class="dream-section">
+      <label>🌠 اختر ما يمثلك</label>
+
+      <!-- tabs -->
+      <div class="dream-tabs">
+        <button class="dtab active" id="tabDream" type="button">
+          ✍️ اكتب حلمك
+        </button>
+        <button class="dtab" id="tabHoro" type="button">
+          🔮 توقع برجك
+        </button>
+      </div>
+
+      <!-- Panel 1: custom dream -->
+      <div id="dreamPanel">
+        <div class="fw ta">
+          <textarea id="fDream" rows="2" placeholder="ما هو حلمك؟" maxlength="30"></textarea>
+          <span class="cc" id="cDream">0/30</span>
+        </div>
+        <div class="ferr" id="eDream">هذا الحقل مطلوب</div>
+      </div>
+
+      <!-- Panel 2: horoscope auto-fill -->
+      <div id="horoPanel">
+        <div class="horo-card" id="horoCard">
+          <div class="horo-text" id="horoText">
+            <span class="horo-loading">أدخل برجك أولاً لتظهر توقعاتك ✨</span>
+          </div>
+        </div>
+        <span class="horo-hint">التوقع يظهر تلقائياً بعد إدخال البرج</span>
+      </div>
+    </div>
+
+    <!-- Dept -->
+    <div class="field">
+      <label>🏫 القسم <small style="color:#aaa;font-size:.67rem">(اختياري)</small></label>
+      <div class="fw">
+        <input id="fDept" type="text" placeholder="مثال: هندسة..." maxlength="11" autocomplete="off"/>
+        <span class="cc" id="cDept">0/11</span>
+      </div>
+    </div>
+
+    <!-- Birthday -->
+    <div class="field">
+      <label>🎂 تاريخ الميلاد <small style="color:#aaa;font-size:.67rem">(اختياري)</small></label>
+      <div class="fw">
+        <input id="fBday" type="text" data-numonly placeholder="27/5/2003" maxlength="11" autocomplete="off"/>
+        <span class="cc" id="cBday">0/11</span>
+      </div>
+      <div class="ferr" id="eBday">أرقام وشرطة مائلة فقط مسموحة</div>
+    </div>
+
+    <!-- Zodiac -->
+    <div class="field">
+      <label>♈ البرج</label>
+      <div class="fw">
+        <input id="fZodiac" type="text" placeholder="مثال: الحمل" maxlength="7" autocomplete="off"/>
+        <span class="cc" id="cZodiac">0/7</span>
+      </div>
+      <div class="ferr" id="eZodiac">هذا الحقل مطلوب</div>
+    </div>
+
+    <!-- Emoji -->
+    <div class="emo-label">😊 اختر إيموجيك (سيظهر أعلى دائرتك)</div>
+    <div class="emo-grid">
+      <button class="eb" data-e="😀">😀</button>
+      <button class="eb" data-e="😎">😎</button>
+      <button class="eb" data-e="🌟">🌟</button>
+      <button class="eb" data-e="🎓">🎓</button>
+      <button class="eb" data-e="🚀">🚀</button>
+      <button class="eb" data-e="❤️">❤️</button>
+      <button class="eb" data-e="🎨">🎨</button>
+      <button class="eb" data-e="📚">📚</button>
+      <button class="eb" data-e="⚽">⚽</button>
+      <button class="eb" data-e="🎵">🎵</button>
+      <button class="eb" data-e="🌈">🌈</button>
+      <button class="eb" data-e="💡">💡</button>
+      <button class="eb" data-e="🏆">🏆</button>
+      <button class="eb" data-e="🦋">🦋</button>
+      <button class="eb" data-e="🌺">🌺</button>
+    </div>
+    <div class="eerr" id="eEmoji">يرجى اختيار إيموجي</div>
+
+    <button class="sbtn" id="submitBtn">إرسال 🎉</button>
+  </div>
+</div>
+
+<!-- Success overlay -->
+<div class="ov" id="successOv">
+  <div class="ovc">
+    <span class="ovi">🎉</span>
+    <div class="ovt">تمت إضافة رسالتك بنجاح!</div>
+    <div class="ovm">ستظهر على الشاشة الكبيرة الآن ✨</div>
+    <div class="ovmot" id="motivateMsg"></div>
+  </div>
+</div>
+<div class="cfwrap" id="cfWrap"></div>
+<div class="ty" id="tyPage">
+  <div class="tyc">
+    <div class="tyi">💙</div>
+    <div class="tyt">شكراً لمشاركتك!</div>
+    <div class="tys">حلمك على الشاشة الآن ✨</div>
+  </div>
+</div>
+
+<script>
+// ── background dots ──
+const COLS=['#e91e8c','#00bcd4','#ffd600','#4caf50','#ff5722','#fff','#ab47bc','#f44336'];
+const bd=document.getElementById('bgDots');
+for(let i=0;i<16;i++){
+  const d=document.createElement('div');d.className='bgd';
+  const s=24+Math.random()*65;
+  d.style.cssText=`width:${s}px;height:${s}px;background:${COLS[i%COLS.length]};left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${9+Math.random()*9}s;animation-delay:-${Math.random()*9}s`;
+  bd.appendChild(d);
+}
+
+// ── char counters ──
+function mkC(inId,ccId,max){
+  const inp=document.getElementById(inId),cc=document.getElementById(ccId);
+  if(!inp||!cc)return;
+  inp.addEventListener('input',()=>{const l=inp.value.length;cc.textContent=`${l}/${max}`;cc.classList.toggle('warn',l>=max-1);});
+}
+mkC('fName','cName',11);mkC('fDream','cDream',30);mkC('fDept','cDept',11);mkC('fBday','cBday',11);mkC('fZodiac','cZodiac',7);
+
+// ── birthday numbers only ──
+const bdayInp=document.getElementById('fBday');
+bdayInp.addEventListener('input',()=>{
+  const cleaned=bdayInp.value.replace(/[^0-9\/\-]/g,'');
+  if(bdayInp.value!==cleaned){bdayInp.value=cleaned;}
+  document.getElementById('cBday').textContent=`${bdayInp.value.length}/11`;
+});
+bdayInp.addEventListener('keypress',(e)=>{
+  if(!/[0-9\/\-]/.test(e.key)&&e.key.length===1){e.preventDefault();}
+});
+
+// ══════════════════════════════════════════
+//  DREAM / HOROSCOPE TOGGLE
+// ══════════════════════════════════════════
+let dreamMode = 'custom';   // 'custom' | 'horoscope'
+let horoForecast = '';       // fetched from server
+
+const tabDream  = document.getElementById('tabDream');
+const tabHoro   = document.getElementById('tabHoro');
+const dreamPanel = document.getElementById('dreamPanel');
+const horoPanel  = document.getElementById('horoPanel');
+const horoText   = document.getElementById('horoText');
+
+tabDream.addEventListener('click',()=>{
+  dreamMode='custom';
+  tabDream.classList.add('active');
+  tabHoro.classList.remove('active');
+  dreamPanel.style.display='block';
+  horoPanel.style.display='none';
+  document.getElementById('eDream').style.display='none';
+});
+
+tabHoro.addEventListener('click',()=>{
+  dreamMode='horoscope';
+  tabHoro.classList.add('active');
+  tabDream.classList.remove('active');
+  dreamPanel.style.display='none';
+  horoPanel.style.display='block';
+  // fetch if zodiac already filled
+  const z=document.getElementById('fZodiac').value.trim();
+  if(z) fetchHoroscope(z);
+});
+
+// auto-fetch when zodiac changes
+document.getElementById('fZodiac').addEventListener('input', function(){
+  if(dreamMode==='horoscope' && this.value.trim()){
+    fetchHoroscope(this.value.trim());
+  }
+});
+
+async function fetchHoroscope(zodiac){
+  horoText.innerHTML='<span class="horo-loading">جاري التحميل... ✨</span>';
+  horoForecast='';
+  try{
+    const res = await fetch('/api/horoscope/'+encodeURIComponent(zodiac));
+    const data = await res.json();
+    if(data.forecast){
+      horoForecast = data.forecast;
+      horoText.innerHTML = horoForecast;
+    } else {
+      horoText.innerHTML='<span class="horo-loading">لا يوجد توقع لهذا البرج حالياً 🔮</span>';
+    }
+  } catch(e){
+    horoText.innerHTML='<span class="horo-loading">تعذّر تحميل التوقع، حاول مرة أخرى</span>';
+  }
+}
+
+// ── emoji ──
+let selEmoji='';
+document.querySelectorAll('.eb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.eb').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');selEmoji=b.dataset.e;
+    document.getElementById('topEmoji').textContent=selEmoji;
+    document.getElementById('eEmoji').style.display='none';
+  });
+});
+
+// ── submit ──
+document.getElementById('submitBtn').addEventListener('click',async()=>{
+  let ok=true;
+
+  function req(id,eid){
+    const v=document.getElementById(id).value.trim();
+    const e=document.getElementById(eid);
+    e.style.display=v?'none':'block';
+    if(!v)ok=false;
+  }
+  req('fName','eName');
+  req('fZodiac','eZodiac');
+
+  // dream validation depends on mode
+  let dreamValue='';
+  if(dreamMode==='custom'){
+    dreamValue=document.getElementById('fDream').value.trim();
+    document.getElementById('eDream').style.display=dreamValue?'none':'block';
+    if(!dreamValue) ok=false;
+  } else {
+    // horoscope mode
+    if(!horoForecast){
+      horoText.innerHTML='<span style="color:#f44336;font-weight:700">يرجى إدخال برجك أولاً لتظهر توقعاتك</span>';
+      ok=false;
+    } else {
+      dreamValue=horoForecast;
+    }
+  }
+
+  // birthday validation
+  const bval=bdayInp.value.trim();
+  if(bval&&/[^0-9\/\-]/.test(bval)){
+    document.getElementById('eBday').style.display='block';ok=false;
+  } else {
+    document.getElementById('eBday').style.display='none';
+  }
+
+  if(!selEmoji){document.getElementById('eEmoji').style.display='block';ok=false;}
+  if(!ok)return;
+
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='جاري الإرسال...';btn.disabled=true;
+  try{
+    const res=await fetch('/api/dreams',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name:     document.getElementById('fName').value.trim(),
+        dream:    dreamValue,
+        dept:     document.getElementById('fDept').value.trim(),
+        birthday: bdayInp.value.trim(),
+        zodiac:   document.getElementById('fZodiac').value.trim(),
+        emoji:    selEmoji,
+        dream_type: dreamMode
+      })
+    });
+    const data=await res.json();
+    if(data.success){
+      document.getElementById('motivateMsg').textContent=data.message;
+      document.getElementById('successOv').classList.add('show');
+      launchConfetti();
+      setTimeout(()=>{
+        document.getElementById('successOv').classList.remove('show');
+        document.getElementById('tyPage').classList.add('show');
+      },2600);
+    }
+  }catch(e){btn.textContent='إرسال 🎉';btn.disabled=false;alert('حدث خطأ، حاول مرة أخرى');}
+});
+
+function launchConfetti(){
+  const w=document.getElementById('cfWrap');
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');p.className='cp';
+      const s=6+Math.random()*9;
+      p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;background:${COLS[Math.floor(Math.random()*COLS.length)]};border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.5+Math.random()*2}s`;
+      w.appendChild(p);setTimeout(()=>p.remove(),4000);
+    },i*28);
+  }
+}
+</script>
+</body>
+</html>
